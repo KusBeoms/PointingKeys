@@ -28,11 +28,9 @@ dotnet build -c Release
 dotnet run -c Release
 ```
 
+배포용 단일 exe(.NET 런타임 포함)는 `publish.bat`으로 `dist\PointingKeys.exe`에 만들어집니다.
+
 ## 자동 시작 등록
 
-Windows 시작 시 자동 실행하려면 Github Release 최신버전을 다운로드, 압축 해제 후
-아무곳에나 프로그램을 저장 한 뒤, `PointingKeys.exe`의 바로가기를 아래 폴더에 넣으세요.
-
-```
-%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup
-```
+트레이 아이콘을 우클릭해서 "Windows 시작 시 실행"을 체크하세요.
+(exe를 옮기면 다시 체크해야 합니다.)

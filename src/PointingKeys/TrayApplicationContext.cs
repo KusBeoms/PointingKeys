@@ -43,12 +43,18 @@ internal sealed class TrayApplicationContext : ApplicationContext
             Checked = _settings.Mode == CapsLockActivationMode.Toggle,
         };
 
+        var autostart = new ToolStripMenuItem("Windows 시작 시 실행") { Checked = Autostart.IsEnabled, CheckOnClick = true };
+        autostart.CheckedChanged += (_, _) => Autostart.Set(autostart.Checked);
+
         var menu = new ContextMenuStrip();
-        menu.Items.Add(new ToolStripMenuItem("PointingKeys") { Enabled = false });
+        menu.Items.Add(new ToolStripMenuItem($"PointingKeys v{Application.ProductVersion.Split('+')[0]}") { Enabled = false });
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(new ToolStripLabel("CapsLock 작동 방식"));
         menu.Items.Add(_momentaryMenuItem);
         menu.Items.Add(_toggleMenuItem);
+        menu.Items.Add(new ToolStripSeparator());
+        menu.Items.Add(autostart);
+        menu.Items.Add("로그 보기", null, (_, _) => OpenLog());
         menu.Items.Add(new ToolStripSeparator());
         menu.Items.Add(new ToolStripMenuItem("종료", null, (_, _) => ExitApplication()));
 
@@ -59,6 +65,17 @@ internal sealed class TrayApplicationContext : ApplicationContext
             ContextMenuStrip = menu,
             Visible = true,
         };
+        _ = TrayPromotion.PromoteAsync();
+    }
+
+    private static void OpenLog()
+    {
+        try
+        {
+            if (!File.Exists(Logger.FilePath)) Logger.Log("log opened");
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Logger.FilePath) { UseShellExecute = true })?.Dispose();
+        }
+        catch (Exception ex) { Logger.Log($"open log failed: {ex}"); }
     }
 
     private void SetActivationMode(CapsLockActivationMode mode)

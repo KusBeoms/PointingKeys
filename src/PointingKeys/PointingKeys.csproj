@@ -10,7 +10,6 @@
     <RootNamespace>PointingKeys</RootNamespace>
     <ApplicationHighDpiMode>SystemAware</ApplicationHighDpiMode>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <Version>0.1.7</Version>
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
